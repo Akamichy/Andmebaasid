@@ -1,0 +1,70 @@
+--Страны, названия которых начинаются на букву “К” (5 записей);
+--Страны, получившие независимость в 19-м веке (27 записей)
+select name, indepyear
+from country
+where indepyear between 1800 and 1899;
+--Страны ближнего востока (Middle East) (18 записей)
+select Name, IndepYear
+from  country
+where region = "Middle East";
+--Европейские страны, которые образовались в 19 веке (7 записей)
+SELECT Name, IndepYear, Continent
+FROM country
+WHERE (IndepYear BETWEEN 1800 and 1899) and continent like 'Europe%';
+--Страны, в названиях которых содержат слог “ра”  (9 записей)
+SELECT Name
+from country
+where Name like '%pa%';
+--Страны, названия которых начинаются на гласную букву  (A, E, I, O, U, Y) (42 записи);
+SELECT Name
+from country
+where Name rlike '^[A, E, I, O, U, Y]'
+--Страны, названия которых начинаются и заканчиваются на одну и ту же букву. (20 записей)
+SELECT Name from country
+where LEFT(name, 1) = RIGHT(name, 1)
+--Государства, формой правления которых является различной формы монархия (43 записи)
+SELECT name, GovernmentForm
+from country
+where GovernmentForm like "%Monarchy%";
+--Страны, население которых меньше 1 млн. (85 записей)
+SELECT name, population
+from country
+where Population < 1000000;
+--Самое древнее государство (China)
+SELECT name, IndepYear
+from country
+ORDER BY IndepYear limit 1;
+--Страны, год обретения независимости которыми не определен (47 записей)
+SELECT Name, IndepYear
+FROM country
+where IndepYear = 0;
+--Самое маленькое по площади государство (Holy See (Vatican City State))
+select name, SurfaceArea
+from country
+ORDER BY SurfaceArea LIMIT 1;
+--Первую десятку наиболее населенных государств мира
+select name, population
+from country
+order by Population DESC LIMIT 10;
+--Первую десятку наиболее населенных государств Европы
+select name, population, Continent
+from country
+where Continent LIKE 'Europe'
+order by Population DESC LIMIT 10;
+--Cуммарное число жителей стран Европы и суммарную площадь её государств (730 074 600, 23 049 133.9)
+select sum(population) as 'Kokku elanike_arv', sum(SurfaceArea) as 'Kokku pindala'
+from country
+WHERE Continent like '%Europe%';
+--Число стран, расположенных не в Антарктике (234 записи)
+SELECT count(Name)
+from country
+WHERE Continent NOT LIKE 'Antarctica';
+--Число стран, где главой правительства является Елизавета II (Elisabeth II), суммарное число жителей этих стран.  (35 стран, 122 872 550 человек)
+SELECT count(Name), sum(Population) 
+from country
+where HeadOfState like 'Elisabeth II';
+--Число стран, наибольшее и наименьшее число жителей стран Полинезии (Polynesia) (10 стран, 235 000 человек, 50 человек)
+SELECT COUNT(*) as RiikideArv, MIN(Population) as Min, MAX(Population) as Max
+FROM country
+WHERE Region LIKE "Polynesia";
+--Первые 5% списка стран мира наименьшей площади
